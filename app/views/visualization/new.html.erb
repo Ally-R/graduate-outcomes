@@ -1,2 +1,37 @@
 <h1>Visualization#new</h1>
 <p>Find me in app/views/visualization/new.html.erb</p>
+
+<%=
+  # Get array of hashes
+  data = Student.group(:career_related).group(:fed_group).count
+  # Compute federal group maximums
+  
+  
+  fed_group_maximums = Hash.new()
+  data.keys.each do |key|
+    if fed_group_maximums.key?(key.second) 
+      fed_group_maximums[key.second] += data[key]
+    else
+      fed_group_maximums[key.second] = data[key] 
+    end
+  end
+  # Make the data display relative percentages
+  data.keys.each do |key|
+    # compute percentage and convert to float
+    data[key] = data[key] / fed_group_maximums[key.second].to_f * 100
+  end
+    
+  # pass data as a hash or array
+  column_chart data,
+  stacked: true,
+  xtitle: "x-axis-title",
+  ytitle: "y-axis-title",
+  # Don't know why this doesn't produce multiple colors?
+  colors: Array.new(Student.group(:career_related).count.count) {Random.bytes(3).unpack1('H*')},
+  download: {filename: "download-filename"},
+  # id: "html-div-id"
+  #width: "800px",
+  height: "500px"
+  # min: 0,
+  # max: 0,
+%>
