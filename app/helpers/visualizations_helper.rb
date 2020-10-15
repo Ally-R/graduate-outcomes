@@ -54,55 +54,34 @@ module VisualizationsHelper
         ]
     end
 
-    def get_chart(visualization)
-        data = Student.all;
-        chart_type = visualization.chart_type
-
-        # Repeatedly apply each filter on the dataset
-        visualization.filters.each do |filter|
-            data = apply_filter(data, filter)
-        end
-
-        visualization.variables.each do |variable|
-            data = set_variable(data, variable)
-        end
-
-        # Render visualization partial. This partial should have logic to determine which chart to graph
-        render partial: "visualization", locals: {data: data, chart_type: chart_type}
-    end
+   def get_visualization_data(visualization)
+       data = Student.all
+       
+       #Find a way to repeatedly apply all filters for each filter in the visualization
+       visualization.filters.each filter do
+           
+           filter_type = filter.filter_type
+           filter_variable_name = filter.variable_name
+           filter_value1 = filter.value1
+           
+           filter_hash = Hash.new
+           filter_hash[filter_variable_name] = filter_value1
+           
+           if filter_type == 'equals'
+               data = data.where(filter_hash)
+           end
+       end
+       
+       
+       # After filtering group the data by some variable(s)
+        
+       
+       return data.group(:major1)
+   end
 
 
     # Applies a single filter on the dataset
     def apply_filter(data, filter_model)
-
-        filter_hash = Hash.new
-        variable_name = filter_model.variable_name;
-        value1 = filter_model.value1
-        value2 = filter_model.value2
-
-        case filter
-        when 'equals_to'
-            filter_hash[variable_name] = value1
-            data = data.where(filter_hash)
-
-        when 'greater_than'
-            data = data.where("#{variable_name} > ?", variable_name, value1)
-
-        when 'greater_than_or_equal'
-            data = data.where("#{variable_name} >= ?", value1)
-
-        when 'less_than'
-            data = data.where("#{variable_name} > ?", value1)
-
-        when 'less_than_or_equal'
-            data = data.where("#{variable_name} >= ?", value1)
-
-        when 'from_to'
-            data = data.where("#{variable_name} >= ? AND #{variable_name} <= ?", value1, value2)
-
-        else
-            data
-        end
     end
 
 

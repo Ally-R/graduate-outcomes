@@ -76,21 +76,6 @@
                 </div>
                 <% end %>
             </ul>
-
-            <b>Summarize by:</b>
-            <ul>
-                <div style="display:flex; flex-direction: row; justify-content: flex-start;">
-                    <div class="viz-form-group">
-                        <label for="summarize_by">Method</label>
-                        <%= f.select :summarize_by, options_for_select(get_form_summarize_methods) %>
-                    </div>
-
-                    <div class="viz-form-group">
-                        <label for="summarize_variable">Variable</label>
-                        <%= f.select :summarize_variable, options_for_select(get_form_variable_names) %>
-                    </div>
-                </div>
-            </ul>
         </div>
 
 

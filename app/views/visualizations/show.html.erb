@@ -1,1 +1,9 @@
 <h1 class="page-title">Visualization #XYZ</h1>
+
+
+<%= puts "---------------------------->#{@visualizations}"%>
+
+<%# pie_chart Student.all.where(major1: 'CSC').group(:major2).count %>
+<%= pie_chart get_visualization_data(@visualization).count %>
+
+
